@@ -1,38 +1,492 @@
-# 03-Basics → Variables
+# Day 1 → Topic 2: Variables and Data Types
 
-> **File:** `01-Basics/03-Variables/README.md`
+Now we'll learn **variables and data types**, which are the foundation for storing and working with data in C.
 
-Your notes are **good for the Variables topic**, especially for a beginner. A few technical points should be corrected/clarified before you keep them as your final `03-Variables` notes.
+---
 
-## Important Corrections
+## 1. What is a Variable?
 
-| Topic           | Your version                                | Better / precise version                                                                                                                                   |
-| --------------- | ------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Variable        | Named memory location used to store a value | A **named object** that has a type and can hold a value.                                                                                                   |
-| Declaration     | `int age;`                                  | Declares `age` as an `int`; its value is **indeterminate** if it is a local automatic variable and hasn't been initialized.                                |
-| Assignment      | `age = 21;`                                 | Stores a new value in an already-declared variable.                                                                                                        |
-| Initialization  | `int age = 21;`                             | Gives the object its **initial value at the time of definition**.                                                                                          |
-| `float`         | `float height = 5.8;`                       | Prefer `float height = 5.8f;` because `5.8` is a `double` literal converted to `float`.                                                                    |
-| `double printf` | `%lf`                                       | For `printf`, `%f` is the correct conversion for `double`. `%lf` is accepted by some implementations, but don't teach it as the normal `printf` specifier. |
-| `double scanf`  | `%lf`                                       | Correct: `%lf` is used with `scanf` for `double`.                                                                                                          |
-| `sizeof`        | Size of a type/object                       | Correct. Result type is `size_t`, so `%zu` is appropriate.                                                                                                 |
-| `char`          | Stores a single character                   | Correct. A `char` object stores a character value; character constants such as `'A'` have type `int` in C.                                                 |
-| `const`         | Make an object non-modifiable               | Better: `const` makes the object **not modifiable through that lvalue/identifier**.                                                                        |
-| Variable memory | "Memory location"                           | Fine as a beginner analogy, but technically C variables are **objects**, not simply memory boxes.                                                          |
+A **variable** is a named memory location used to store a value.
 
-## Format Specifiers You Should Remember
+For example:
 
-| Type     | Declaration     | `printf` | `scanf` | Example       |
-| -------- | --------------- | -------- | ------- | ------------- |
-| `int`    | `int age;`      | `%d`     | `%d`    | `21`          |
-| `float`  | `float height;` | `%f`     | `%f`    | `5.8f`        |
-| `double` | `double pi;`    | `%f`     | `%lf`   | `3.14159`     |
-| `char`   | `char grade;`   | `%c`     | `%c`    | `'A'`         |
-| `size_t` | `size_t size;`  | `%zu`    | —       | `sizeof(int)` |
+```c
+int age = 21;
+```
 
-## One Correction to Your Complete Example
+Think of it like a box:
 
-This is better:
+```text
+Memory
+┌─────────────┐
+│     21      │
+└─────────────┘
+      ↑
+     age
+```
+
+Here:
+
+| Part  | Meaning             |
+| ----- | ------------------- |
+| `int` | Data type           |
+| `age` | Variable name       |
+| `=`   | Assignment operator |
+| `21`  | Value               |
+| `;`   | End of statement    |
+
+---
+
+# 2. Why Do We Need Variables?
+
+Without variables:
+
+```c
+printf("21");
+printf("21");
+printf("21");
+```
+
+With variables:
+
+```c
+int age = 21;
+
+printf("%d", age);
+```
+
+The second approach is useful because the value can change:
+
+```c
+int age = 21;
+
+age = 22;
+
+printf("%d", age);
+```
+
+Output:
+
+```text
+22
+```
+
+---
+
+# 3. Declaring a Variable
+
+Declaration tells C:
+
+> "I want a variable of this type."
+
+```c
+int age;
+```
+
+At this point, we have declared `age`, but haven't given it a useful value.
+
+Then:
+
+```c
+age = 21;
+```
+
+This gives it a value.
+
+So:
+
+```c
+int age;
+age = 21;
+```
+
+---
+
+# 4. Initialization
+
+You can declare and assign a value at the same time:
+
+```c
+int age = 21;
+```
+
+This is called **initialization**.
+
+### Declaration
+
+```c
+int age;
+```
+
+### Assignment
+
+```c
+age = 21;
+```
+
+### Initialization
+
+```c
+int age = 21;
+```
+
+---
+
+# 5. Basic C Data Types
+
+The most important basic types are:
+
+| Data Type | Used for                     | Example    |
+| --------- | ---------------------------- | ---------- |
+| `int`     | Whole numbers                | `25`       |
+| `float`   | Decimal numbers              | `3.14`     |
+| `double`  | More precise decimal numbers | `3.141592` |
+| `char`    | Single character             | `'A'`      |
+
+---
+
+# 6. `int`
+
+Used for whole numbers.
+
+```c
+int age = 21;
+int marks = 85;
+int count = 100;
+```
+
+Example:
+
+```c
+#include <stdio.h>
+
+int main()
+{
+    int age = 21;
+
+    printf("%d", age);
+
+    return 0;
+}
+```
+
+Output:
+
+```text
+21
+```
+
+`%d` is the format specifier used to print an `int`.
+
+---
+
+# 7. `float`
+
+Used for decimal values.
+
+```c
+float height = 5.8;
+```
+
+Example:
+
+```c
+#include <stdio.h>
+
+int main()
+{
+    float height = 5.8;
+
+    printf("%f", height);
+
+    return 0;
+}
+```
+
+Output may look like:
+
+```text
+5.800000
+```
+
+You can control the number of decimal places:
+
+```c
+printf("%.2f", height);
+```
+
+Output:
+
+```text
+5.80
+```
+
+---
+
+# 8. `double`
+
+`double` is also used for decimal values and generally provides **more precision than `float`**.
+
+```c
+double pi = 3.1415926535;
+```
+
+Example:
+
+```c
+#include <stdio.h>
+
+int main()
+{
+    double pi = 3.1415926535;
+
+    printf("%lf", pi);
+
+    return 0;
+}
+```
+
+For `printf`, `%f` is commonly used for both `float` and `double`; for `scanf`, `%f` is used for `float` and `%lf` for `double`.
+
+---
+
+# 9. `char`
+
+Used to store a **single character**.
+
+```c
+char grade = 'A';
+```
+
+Notice the difference:
+
+```c
+'A'    → character
+"A"    → string
+```
+
+Example:
+
+```c
+#include <stdio.h>
+
+int main()
+{
+    char grade = 'A';
+
+    printf("%c", grade);
+
+    return 0;
+}
+```
+
+Output:
+
+```text
+A
+```
+
+`%c` is used to print a character.
+
+---
+
+# 10. String vs Character
+
+This is very important.
+
+### Character
+
+```c
+char grade = 'A';
+```
+
+One character.
+
+### String
+
+```c
+char name[] = "Gajanand";
+```
+
+Multiple characters.
+
+```text
+'A'       → character
+"Gajanand" → string
+```
+
+We'll study strings properly later.
+
+---
+
+# 11. Multiple Variables
+
+You can create multiple variables:
+
+```c
+int age = 21;
+float height = 5.8;
+char grade = 'A';
+```
+
+Then:
+
+```c
+printf("%d\n", age);
+printf("%.1f\n", height);
+printf("%c\n", grade);
+```
+
+Output:
+
+```text
+21
+5.8
+A
+```
+
+---
+
+# 12. `sizeof()`
+
+C provides `sizeof()` to determine the size of a type or object in bytes.
+
+Example:
+
+```c
+#include <stdio.h>
+
+int main()
+{
+    int age = 21;
+
+    printf("%zu", sizeof(age));
+
+    return 0;
+}
+```
+
+The exact size of C types is **implementation-defined**, so don't assume `int` is always exactly 4 bytes.
+
+You can check your system:
+
+```c
+printf("%zu\n", sizeof(int));
+printf("%zu\n", sizeof(float));
+printf("%zu\n", sizeof(double));
+printf("%zu\n", sizeof(char));
+```
+
+---
+
+# 13. Variable Naming Rules
+
+Valid:
+
+```c
+int age;
+int studentAge;
+int marks1;
+int _count;
+```
+
+Invalid:
+
+```c
+int 1age;        // Cannot start with a digit
+int student age; // Spaces not allowed
+int int;         // Keyword cannot be used
+```
+
+### Important rules
+
+A variable name:
+
+* Can contain letters
+* Can contain digits
+* Can contain `_`
+* Cannot start with a digit
+* Cannot contain spaces
+* Cannot be a C keyword
+* Is case-sensitive
+
+For example:
+
+```c
+age
+Age
+AGE
+```
+
+are three different identifiers.
+
+---
+
+# 14. Variable Naming Best Practice
+
+Prefer meaningful names:
+
+```c
+int studentAge;
+float salary;
+int totalMarks;
+```
+
+Avoid:
+
+```c
+int x;
+int a;
+int abc;
+```
+
+unless the short name has a clear purpose.
+
+---
+
+# 15. Changing a Variable
+
+Variables can change:
+
+```c
+int age = 21;
+
+age = 22;
+
+printf("%d", age);
+```
+
+Output:
+
+```text
+22
+```
+
+The variable is still called `age`; only its stored value changed.
+
+---
+
+# 16. Constants with `const`
+
+You can make an object non-modifiable through `const`:
+
+```c
+const int DAYS = 7;
+```
+
+Then this is not allowed:
+
+```c
+DAYS = 10;
+```
+
+`const` means the object cannot be modified through that identifier after initialization.
+
+We'll cover `const`, literals, `#define`, and constant expressions more deeply later.
+
+---
+
+# 17. Complete Example
 
 ```c
 #include <stdio.h>
@@ -53,20 +507,92 @@ int main()
 }
 ```
 
-## Practice Order
+Output:
 
-Do these **without copying the solution**:
+```text
+Age: 21
+Height: 5.8
+Percentage: 85.75
+Grade: A
+```
 
-| #  | Practice                                                  | Main concept                     |
-| -- | --------------------------------------------------------- | -------------------------------- |
-| 1  | Student Information                                       | Variables + different data types |
-| 2  | Rectangle Area                                            | Variables + arithmetic           |
-| 3  | Salary                                                    | `float`/`double`                 |
-| 4  | Celsius → Fahrenheit                                      | Variables + formula              |
-| 5  | `sizeof()`                                                | Data type sizes                  |
-| 6  | Change `age` from 20 → 21                                 | Assignment                       |
-| 7  | Store two integers and print their sum                    | `int` + operators                |
-| 8  | Store marks of 3 subjects and calculate total             | Multiple variables               |
-| 9  | Store price and quantity, calculate total                 | `float` + `int`                  |
-| 10 | Store name, age, marks, grade and print a student profile | Combining everything             |
+---
+
+# 🧠 Remember This
+
+```text
+Variable
+   ↓
+Name + Type + Value
+   ↓
+int age = 21;
+│   │    │
+│   │    └── Value
+│   └─────── Variable name
+└─────────── Data type
+```
+
+### The four basic types to remember now:
+
+```text
+int     → whole numbers
+float   → decimal numbers
+double  → more precise decimal numbers
+char    → single character
+```
+
+---
+
+# 📝 Practice Before Moving On
+
+Write these programs yourself:
+
+### 1. Student Information
+
+Create variables for:
+
+```text
+Name
+Age
+Marks
+Grade
+```
+
+and print them.
+
+### 2. Rectangle
+
+Create:
+
+```text
+length
+width
+```
+
+Calculate:
+
+```text
+Area = length × width
+```
+
+### 3. Salary
+
+Create a salary variable and print it.
+
+### 4. Temperature
+
+Store a temperature in Celsius and print it.
+
+### 5. Experiment with `sizeof()`
+
+Print the size of:
+
+```text
+char
+int
+float
+double
+```
+
+---
 
